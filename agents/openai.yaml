@@ -1,0 +1,4 @@
+interface:
+  display_name: "抖音周榜 Top10 投流计划"
+  short_description: "按近七日 GMV 和 VV 周榜参数化创建或更新 Top10 投流计划"
+  default_prompt: "使用 $douyin-weekly-top10-local-ads 预演本周 GMV 和 VV 榜单投放，核对后执行并回读。"
