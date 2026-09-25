@@ -5,6 +5,17 @@ description: Create or update 巨量本地推短视频图文 plans from weekly G
 
 # 抖音周榜与表格回传门店种草投放
 
+## 后台优先与前台兜底
+
+执行优先级：先使用已授权、可用且能精确绑定账号与页面的端口/浏览器后台连接、参数化脚本或官方接口；其次使用已登录页面的后台同源请求；仅在相关后台路径确实不可用时使用前台兜底。官方接口已满足任务时不必为端口方式额外探测。不能把“后台优先”解释为“禁止所有前台操作”。
+
+使用已有端口连接前核对工具允许的访问方式、浏览器资料、准确 URL 和账号/计划；不盲扫端口，不自行开启调试权限，不绕过工具限制或另建登录环境。页面 JavaScript/DOM 操作与系统键鼠分开判断，正常后台执行不激活窗口。
+
+启用前台兜底前说明后台失败的具体证据、拟操作范围与预计占用方式；当前任务已授权该兜底且工具允许时继续，不逐批重复确认。如果用户正在使用前台、明确要求本次全程后台，或工具要求额外批准，则先协调必要的前台时段/授权。优先最少量的语义操作或一次 Console 参数化脚本提交，避免逐条鼠标重复操作及盲目坐标回放。
+
+接口明确禁止调用、账号不匹配、登录挑战或权限拒绝不得通过换通道绕过。一般能力不支持时可采用获准的正常页面操作；写入结果不确定时，先回读并恢复检查点，绝不因切换前后台而重复提交。原有素材保留、删除授权、准确 ID 与回读验收规则始终有效。无法完成的页面验收如实记录；用户明确接受本次接口验收时按该范围交付。
+
+
 ## 本技能 MAPI 接口接入
 
 执行本技能的 MAPI 查询、写入或回读前，读取 [references/mapi-execution.md](references/mapi-execution.md)。接口代码随本技能独立分发；沿用下述业务功能与筛选规则。
@@ -51,8 +62,6 @@ Dry run performs identity checks, current-unit detail reads, protected-ID constr
 node ${CODEX_HOME:-$HOME/.codex}/skills/douyin-creator-material-ads/scripts/run_weekly_local_ads.mjs \
   --config /private/tmp/douyin-weekly-run.json --dry-run
 ```
-
-The distributed Chrome runner defaults to dry-run. For an authorized write, add `--execute` and set `confirmAdvertiserId` to the exact authorized `advertiserId`; these are script guards, not a requirement to ask again when the user already authorized the target action.
 
 The agent creates the temporary config itself. Do not ask the user to write JSON, paste Console code, click confirmation dialogs, or keep Chrome in the foreground.
 
@@ -156,3 +165,11 @@ Only report completion when readback verifies all assertions. Do not claim that 
 - During a normal run, use one config, one runner invocation, one capture, one submission, and one readback.
 - Do not re-discover Chrome ports, CDP settings, extension state, AppleScript settings, endpoint families, or old HAR files when the direct runner reaches the exact tab.
 - A missing exact tab, non-unique save button, changed payload schema, login loss, CAPTCHA, permission change, or failed identity assertion is a fast failure. Stop at that guard; do not spend the run on unrelated exploration.
+
+## 发布版执行参数
+
+后台优先策略不改变发布版预演和目标校验。已授权任务由执行者填写这些参数，不代表需要逐批再次询问用户。
+
+Chrome runner 默认预演；实际执行使用 `--execute`，并在配置中设置与 `advertiserId` 相同的 `confirmAdvertiserId`。
+
+`applescript_eval.sh` 默认不激活窗口；仅获准的前台兜底同时使用 `--activate --allow-foreground`。没有该 helper 的技能按其连接器流程执行。

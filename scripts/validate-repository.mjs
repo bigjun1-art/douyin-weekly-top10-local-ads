@@ -58,4 +58,5 @@ for (const file of walk(root)) {
 
 run(process.execPath, ["scripts/run_weekly_local_ads.mjs","--self-test"]);
 run(process.execPath, ["scripts/test-mapi-runner.mjs"]);
+run(process.execPath, ["scripts/test-foreground-gate.mjs"]);
 console.log(JSON.stringify({ ok: true, skill: skillName, checks: ["structure", "secret-patterns", "syntax", "self-test", "mapi-self-test"] }));
