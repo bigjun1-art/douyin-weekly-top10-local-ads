@@ -29,9 +29,9 @@ const units = [
   { promotionId: "gmv", name: "20260810_周gmv-top11-20", rows: selected.gmv },
   { promotionId: "vv", name: "20260810_周vv-top11-20", rows: selected.vv },
 ];
-const changed = mutateUpdatePayload(payload, { projectName: "20260810_门店浏览_gmv-vv-11-20", currentProjectName: "old-project", units });
+const changed = mutateUpdatePayload(payload, { projectName: "20260810_门店种草_gmv-vv-11-20", currentProjectName: "old-project", units });
 assert.deepEqual(payload.untouched, changed.untouched);
-assert.equal(changed.project_name, "20260810_门店浏览_gmv-vv-11-20");
+assert.equal(changed.project_name, "20260810_门店种草_gmv-vv-11-20");
 assert.deepEqual(changed.multiAdProxy.promotionUpdateInfo[0].materialGroupUpdateInfo.VideoMaterialList.map((x) => x.AwemeItemId), selected.gmv.map(videoId));
 assert.deepEqual(changed.multiAdProxy.promotionUpdateInfo[1].materialGroupUpdateInfo.TitleMaterialList.map((x) => x.AwemeItemId), selected.vv.map(videoId));
 
@@ -43,17 +43,17 @@ const createPayload = {
   } },
 };
 const created = mutateCreatePayload(createPayload, {
-  projectName: "20260810_门店浏览_gmv-vv-11-20", currentProjectName: "copy-project",
+  projectName: "20260810_门店种草_gmv-vv-11-20", currentProjectName: "copy-project",
   units: [{ ...units[0], currentName: "copy-gmv" }, { ...units[1], currentName: "copy-vv" }],
 });
-assert.equal(created.project.name, "20260810_门店浏览_gmv-vv-11-20");
+assert.equal(created.project.name, "20260810_门店种草_gmv-vv-11-20");
 assert.equal(created.multiAdProxy.promotionCreateInfo[0].promotionCreateInfo.Name, units[0].name);
 assert.equal(created.multiAdProxy.promotionCreateInfo[1].materialGroupCreateInfo.VideoMaterialList.length, 2);
 
 const readback = units.map((unit) => ({
-  id: unit.promotionId, name: unit.name, projectName: "20260810_门店浏览_gmv-vv-11-20", ids: unit.rows.map(videoId),
+  id: unit.promotionId, name: unit.name, projectName: "20260810_门店种草_gmv-vv-11-20", ids: unit.rows.map(videoId),
 }));
-assert.equal(verifyReadback(readback, units.map((x) => ({ ...x, projectName: "20260810_门店浏览_gmv-vv-11-20" }))).uniqueVideoCount, 4);
-assert.throws(() => verifyReadback([{ ...readback[0], ids: ["g1", "g2"] }, { ...readback[1], ids: ["g1", "v2"] }], units.map((x) => ({ ...x, projectName: "20260810_门店浏览_gmv-vv-11-20" }))), /material ids mismatch|cross-unit duplicate/);
+assert.equal(verifyReadback(readback, units.map((x) => ({ ...x, projectName: "20260810_门店种草_gmv-vv-11-20" }))).uniqueVideoCount, 4);
+assert.throws(() => verifyReadback([{ ...readback[0], ids: ["g1", "g2"] }, { ...readback[1], ids: ["g1", "v2"] }], units.map((x) => ({ ...x, projectName: "20260810_门店种草_gmv-vv-11-20" }))), /material ids mismatch|cross-unit duplicate/);
 
 console.log(JSON.stringify({ ok: true, tests: ["protected-window", "gmv-first-vv-dedupe", "staff-guard", "update-mutation", "create-mutation", "readback"] }));

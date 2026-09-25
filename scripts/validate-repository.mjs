@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const skillName = "douyin-weekly-top10-local-ads";
+const skillName = "douyin-creator-material-ads";
 
 function walk(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -57,4 +57,5 @@ for (const file of walk(root)) {
 }
 
 run(process.execPath, ["scripts/run_weekly_local_ads.mjs","--self-test"]);
-console.log(JSON.stringify({ ok: true, skill: skillName, checks: ["structure", "secret-patterns", "syntax", "self-test"] }));
+run(process.execPath, ["scripts/test-mapi-runner.mjs"]);
+console.log(JSON.stringify({ ok: true, skill: skillName, checks: ["structure", "secret-patterns", "syntax", "self-test", "mapi-self-test"] }));

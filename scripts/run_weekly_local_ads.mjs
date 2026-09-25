@@ -37,7 +37,7 @@ function validateConfig(cfg) {
   assert(Array.isArray(cfg.rankings?.gmv) && Array.isArray(cfg.rankings?.vv), "rankings.gmv/vv are required");
   assert(Array.isArray(cfg.units) && cfg.units.length === 2, "exactly two target units are required");
   assert(cfg.units.map((x) => x.metric).sort().join(",") === "gmv,vv", "units must contain gmv and vv");
-  assert(cfg.projectName === `${cfg.businessDate}_门店浏览_gmv-vv-${cfg.rankStart}-${cfg.rankEnd}`, "projectName does not match date/window");
+  assert(cfg.projectName === `${cfg.businessDate}_门店种草_gmv-vv-${cfg.rankStart}-${cfg.rankEnd}`, "projectName does not match date/window");
   assert(String(cfg.currentProjectName || ""), "currentProjectName is required");
   for (const unit of cfg.units) {
     if (cfg.operation === "update") assert(/^\d+$/.test(String(unit.promotionId || "")), `invalid promotionId for ${unit.metric}`);
